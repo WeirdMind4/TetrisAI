@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -63,7 +63,7 @@ namespace Tetris3
             }
 
 
-            pieces.Add(new int[4, 4]{{0,0,0,0},// I Shape
+            pieces.Add(new int[4, 4]{{0,0,0,0},// l Shape
                                      {1,1,1,1},
                                      {0,0,0,0},
                                      {0,0,0,0},});
@@ -92,6 +92,8 @@ namespace Tetris3
                                      {1,1}});
 
             Random();
+            //run AI here
+
             Time();
 
 
@@ -104,18 +106,6 @@ namespace Tetris3
             number = random;
             //number = 6;
         }
-
-      /*  private void ClearLocation(int dimension)
-        {
-            if (row > 0 && row < 21)
-            {
-                for (int x = 0; x < dimension; x++)
-                {
-                    panelBoard[column+x, row - 1].BackColor = Color.Transparent;
-                    boolBoard[column+x, row - 1] = 0;
-                }
-            }
-        }*/
 
 
 
@@ -147,6 +137,7 @@ namespace Tetris3
         private void Shift(int direction)//row gives y-pos   column gives x-pos
         {
             bool canShift;
+            bool allErased = false;
 
             canShift = CanShift(direction);
 
@@ -155,9 +146,16 @@ namespace Tetris3
 
                 column = column + direction;
                 //clear the area where the piece was previously
-                Erase(direction,0);//column is moving left == -1, or right == 1, row is not moving == 0
-                //draw at Board[c,r]
-                Draw();
+                allErased = Erase(direction,0);//column is moving left == -1, or right == 1, row is not moving == 0
+
+
+                if (allErased == true)
+                {                
+                    //draw at Board[c,r]
+                    Draw();
+                }
+
+
             }
             else
             {
@@ -185,7 +183,7 @@ namespace Tetris3
         }
 
 
-        private void Erase(int x, int y)//column and row movement
+        private bool Erase(int x, int y)//column and row movement
         {
                 //row gives y-pos   column gives x-pos
                 for (int r = 0; r < dim; r++)//r = row
@@ -199,6 +197,7 @@ namespace Tetris3
                         }
                     }
                 }
+            return true;
         }
 
 
@@ -219,12 +218,17 @@ namespace Tetris3
                             AddToBoard();
                             return false;
                         }
-                        else if (boolBoard[posColumn+c,posRow+r] == 1)//if the possible space has a block in it (boolBoard == 1)
+                        else if (boolBoard[posColumn + c, posRow + r] == 1)//if the possible space has a block in it (boolBoard == 1)
                         {
                             //no go
                             AddToBoard();
                             return false;
                         }
+                     /*   else if (r + posRow <= 0)
+                        {
+                            AddToBoard();
+                            return false;
+                        }*/
                     }
                 }
             }
@@ -303,33 +307,6 @@ namespace Tetris3
         }
 
 
-        /*  private void isLine()
-          {
-             bool lineFull = true;
-
-              for (int r = 0; r < 20; r++)//row gives y-pos   column gives x-pos
-              {
-                  for (int c = 0; c < 10; c++)
-                  {
-                      if (boolBoard[c, r] == 0)//there is not a block there and the line is not full
-                      {
-                          lineFull = false;
-                          //break;//if it reaches here the line is not full so exit the loop for this row
-                      }
-                      //else//if lineFull = true
-                      //{
-
-                          //Array.Copy(boolBoard, (r * 10 + c), boolBoard, 8, 4);
-                      //}
-                  }
-                  //if it makes it here there are all 1's in the row
-                  if (lineFull == true)
-                  {
-                      EraseLine(r);
-                  }
-              }
-          }*/
-
         private void EraseLine(int clearRow)
             {
                 for (int c = 0; c < 10; c++)//row gives y-pos   column gives x-pos
@@ -346,18 +323,6 @@ namespace Tetris3
             }
         
 
-        //arrow buttons
-        /* protected override void OnKeyDown(KeyEventArgs e)
-         {
-             if (e.KeyCode == Keys.Left)//if the left arrow is pressed
-             {
-                 column--;
-             }
-             if (e.KeyCode == Keys.Right)
-             {
-                 column++;
-             }
-         }*/
             protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             switch(keyData)
@@ -377,7 +342,7 @@ namespace Tetris3
         private void Time()
         {
             System.Timers.Timer timer = new System.Timers.Timer();
-            timer.Interval = 200;
+            timer.Interval = 100;
             timer.Elapsed += Tick;
             timer.AutoReset = true;
             timer.Enabled = true;
@@ -389,8 +354,6 @@ namespace Tetris3
 
             Drop();
 
-           // ColorChange(vcount);
-           // vcount++;
         }
     }
 }
