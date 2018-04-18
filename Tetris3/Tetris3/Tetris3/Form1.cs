@@ -170,6 +170,20 @@ namespace Tetris3
 
                 { 0, 0, 0, 0 },
 
+            },
+
+            new int[,]
+
+             {
+
+                { 0, 0, 0, 1 },
+
+                { 0, 0, 0, 1 },
+
+                { 0, 0, 0, 1 },
+
+                { 0, 0, 0, 1 },
+
             }
 
             };
@@ -187,29 +201,44 @@ namespace Tetris3
                 int[][,] Zpiece = new int[][,]
 
     {
+            new int[,]
+
+            {
+
+                { 1, 1, 0, 0 },
+
+                { 0, 1, 1, 0 },
+
+                { 0, 0, 0, 0 },
+
+                { 0, 0, 0, 0 },
+            },
 
             new int[,]
 
             {
 
-                { 1, 1, 0 },
+                { 0, 1, 1, 0},
 
-                { 0, 1, 1 },
+                { 0, 0, 1, 1 },
 
-                { 0, 0, 0 },
+                { 0, 0, 0, 0},
 
+                { 0, 0, 0, 0 },
             },
+
 
             new int[,]
 
                         {
 
-                { 0, 1, 0 },
+                { 0,0, 1, 0 },
 
-                { 1, 1, 0 },
+                { 0,1, 1, 0 },
 
-                { 1, 0, 0 },
+                { 0, 1, 0, 0 },
 
+                { 0, 0, 0, 0 },
             }
 
     };
@@ -226,11 +255,13 @@ namespace Tetris3
 
             {
 
-                { 0, 1, 1 },
+                { 0, 1, 1, 0 },
 
-                { 1, 1, 0 },
+                { 1, 1, 0, 0 },
 
-                { 0, 0, 0 },
+                { 0, 0, 0, 0 },
+
+                { 0, 0, 0, 0 },
 
             },
 
@@ -238,11 +269,13 @@ namespace Tetris3
 
                         {
 
-                { 1, 0, 0 },
+                { 1, 0, 0, 0 },
 
-                { 1, 1, 0 },
+                { 1, 1, 0, 0 },
 
-                { 0, 1, 0 },
+                { 0, 1, 0, 0 },
+
+                { 0, 0, 0, 0 },
 
             }
 
@@ -260,12 +293,13 @@ namespace Tetris3
 
             {
 
-                { 1, 0, 0 },
+                { 1, 0, 0, 0 },
 
-                { 1, 0, 0 },
+                { 1, 0, 0, 0 },
 
-                { 1, 1, 0 },
+                { 1, 1, 0, 0 },
 
+                { 0, 0, 0, 0 },
             },
 
             new int[,]
@@ -320,17 +354,19 @@ namespace Tetris3
 
             {
 
-                { 0, 0, 1 },
+                { 0, 0, 0, 1 },
 
-                { 0, 0, 1 },
+                { 0, 0, 0, 1 },
 
-                { 0, 1, 1 },
+                { 0, 0, 1, 1 },
+
+                { 0, 0, 0, 0 },
 
             },
 
             new int[,]
 
-                        {
+             {
 
                 { 0, 0, 0 },
 
@@ -496,7 +532,7 @@ namespace Tetris3
 
             Random randomGenerator = new Random();
 
-            int random = randomGenerator.Next(0, 6);
+            int random = randomGenerator.Next(0, 7);
 
             number = random;
 
@@ -513,13 +549,16 @@ namespace Tetris3
         private void AI()
 
         {
+            bestChoice = -1;
+
+
 
             for (int p = 0; p < pieces[number].Length; p++)//loops all the rotations of the piece
 
             {
 
-                for (int c = 0; c < 9 - currentPiece[rotation].GetLength(0); c++)//should go through all columns possible for 1 rotation
-
+                // for (int c = 0; c < 9 - currentPiece[p].GetLength(0); c++)//should go through all columns possible for 1 rotation
+                for (int c = 0; c < 7 ; c++)
                 {
 
                     AIDrop(p, c);
@@ -541,7 +580,7 @@ namespace Tetris3
 
 
 
-        private void AIDrop(int rotation, int column)
+        private void AIDrop(int p, int column)
 
         {
 
@@ -559,15 +598,15 @@ namespace Tetris3
 
 
 
-                for (int r = 0; r < currentPiece[rotation].GetLength(0); r++)//row gives y-pos   column gives x-pos
+                for (int r = 0; r < currentPiece[p].GetLength(0); r++)//row gives y-pos   column gives x-pos
 
                 {
 
-                    for (int c = 0; c < currentPiece[rotation].GetLength(0); c++)
+                    for (int c = 0; c < currentPiece[p].GetLength(0); c++)
 
                     {
 
-                        if (currentPiece[rotation][r, c] == 1)
+                        if (currentPiece[p][r, c] == 1)
 
                         {
 
@@ -647,7 +686,7 @@ namespace Tetris3
 
             //AI is lines end
 
-            double sum = (row * .5) + (lines * 1);
+            double sum = (row * .5) + (lines * 100);//heuristics
 
             if (bestChoice < sum)
 
@@ -655,7 +694,7 @@ namespace Tetris3
 
                 bestChoice = sum;
 
-                bestRotation = rotation;
+                bestRotation = p;
 
                 bestColumn = column;
 
@@ -736,6 +775,7 @@ namespace Tetris3
                 row = 0;
 
                 Random();
+
 
                 AI();
 
@@ -1227,7 +1267,7 @@ namespace Tetris3
 
             System.Timers.Timer timer = new System.Timers.Timer();
 
-            timer.Interval = 200;
+            timer.Interval = 0.1;
 
             timer.Elapsed += Tick;
 
