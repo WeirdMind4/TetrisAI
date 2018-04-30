@@ -103,6 +103,16 @@ namespace Tetris3.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Gradient1 {
+            get {
+                object obj = ResourceManager.GetObject("Gradient1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Green {
             get {
                 object obj = ResourceManager.GetObject("Green", resourceCulture);
@@ -113,9 +123,39 @@ namespace Tetris3.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Mute {
+            get {
+                object obj = ResourceManager.GetObject("Mute", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Mute1 {
+            get {
+                object obj = ResourceManager.GetObject("Mute1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Orange {
             get {
                 object obj = ResourceManager.GetObject("Orange", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap play_button {
+            get {
+                object obj = ResourceManager.GetObject("play_button", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -136,6 +176,36 @@ namespace Tetris3.Properties {
         internal static System.Drawing.Bitmap Red {
             get {
                 object obj = ResourceManager.GetObject("Red", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap tetris_logo {
+            get {
+                object obj = ResourceManager.GetObject("tetris_logo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap tetris_logo_fix {
+            get {
+                object obj = ResourceManager.GetObject("tetris_logo_fix", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap tetris_logo_fix1 {
+            get {
+                object obj = ResourceManager.GetObject("tetris_logo_fix1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

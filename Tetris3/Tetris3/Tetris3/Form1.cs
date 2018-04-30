@@ -2,31 +2,37 @@ using System;
 
 using System.Collections.Generic;
 
-using System.ComponentModel;
-
-using System.Data;
-
 using System.Drawing;
 
 using System.Linq;
 
-using System.Text;
-
-using System.Threading.Tasks;
-
 using System.Windows.Forms;
 
-using System.Timers;
-
-
+using System.Media;
 
 namespace Tetris3
 
 {
-
     public partial class Form1 : Form
 
     {
+
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int HT_CAPTION = 0x2;
+
+        [System.Runtime.InteropServices.DllImportAttribute("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+        [System.Runtime.InteropServices.DllImportAttribute("user32.dll")]
+        public static extern bool ReleaseCapture();
+
+        private void Form1_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                ReleaseCapture();
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            }
+        }
 
         public int[,] boolBoard = new int[10, 20];
 
@@ -67,29 +73,55 @@ namespace Tetris3
         public int Holes = 0;
 
         List<int> bag = new List<int>();
+
         public Form1()
 
         {
+            InitializeComponent();         
 
-            InitializeComponent();
+            for (int y = 0; y < 20; y++)// makes all locations black
+
+            {
+
+                for (int x = 0; x < 10; x++)
+
+                {
+
+                    Panel panel = new Panel
+                    {
+
+                        // panel.BackColor = Color.Black;
+
+                        BackgroundImage = Properties.Resources.Black,
+
+                        BackgroundImageLayout = ImageLayout.Stretch,
+
+                        Size = new Size(25, 25),
+
+                        Location = new Point((x * 25) + 10, (y * 25) + 10)
+                    };
+
+                    //panel.BorderStyle = BorderStyle.Fixed3D;
+
+                    this.Controls.Add(panel);
+
+                    panelBoard[x, y] = panel;
+
+
+
+                }
+
+            }
+
 
         }
 
 
-
-        private void Form1_Load(object sender, EventArgs e)
-
-        {
-
-
-
-        }
-
-
-
-        private void btnStart_Click(object sender, EventArgs e)
+        private void BtnStart_Click(object sender, EventArgs e)
 
         {
+            SoundPlayer music = new SoundPlayer();
+            music.Stop();
 
             for (int y = 0; y < 20; y++)// makes all locations empty / 0
 
@@ -100,40 +132,6 @@ namespace Tetris3
                 {
 
                     boolBoard[x, y] = 0;
-
-                }
-
-            }
-
-
-
-            for (int y = 0; y < 20; y++)// makes all locations black
-
-            {
-
-                for (int x = 0; x < 10; x++)
-
-                {
-
-                    Panel panel = new Panel();
-
-                    // panel.BackColor = Color.Black;
-
-                    panel.BackgroundImage = Properties.Resources.Black;
-
-                    panel.BackgroundImageLayout = ImageLayout.Stretch;
-
-                    panel.Size = new Size(25, 25);
-
-                    panel.Location = new Point((x * 25) + 10, (y * 25) + 10);
-
-                    //panel.BorderStyle = BorderStyle.Fixed3D;
-
-                    this.Controls.Add(panel);
-
-                    panelBoard[x, y] = panel;
-
-
 
                 }
 
@@ -681,20 +679,26 @@ namespace Tetris3
         private void Drop()//row gives y-pos   column gives x-pos
 
         {
-
-            if (row < bestRow && row < 20)
+            if (row > bestRow || row > 19)
             {
-                row++;
-                Erase();
-                Draw();
-                //Erase(0, 1);//column is not moving == 0, row is moving == 1
+                GAMEOVER();
             }
-
             else
             {
-                AddToBoard();
-                Random();
-                AI();
+                if (row < bestRow && row < 20)
+                {
+                    row++;
+                    Erase();
+                    Draw();
+                    //Erase(0, 1);//column is not moving == 0, row is moving == 1
+                }
+
+                else
+                {
+                    AddToBoard();
+                    Random();
+                    AI();
+                }
             }
 
         }
@@ -874,15 +878,21 @@ namespace Tetris3
         private void GAMEOVER()
         {
             Time(false);
+            while (MessageBox.Show("Game Over", "Try again?", MessageBoxButtons.YesNo) == DialogResult.No)
+            {
+                MessageBox.Show("Thanks for playing!");
+                Application.Exit();
+            }
         }
 
 
         private void Time(bool stop)
 
         {
-            System.Timers.Timer timer = new System.Timers.Timer();
-
-            timer.Interval = 25;
+            System.Timers.Timer timer = new System.Timers.Timer
+            {
+                Interval = 50
+            };
 
             timer.Elapsed += Tick;
 
@@ -909,6 +919,24 @@ namespace Tetris3
 
         }
 
+        private void ExitButton_Click(object sender, EventArgs e)
+        {
+            System.Windows.Forms.Application.Exit();
+        }
+
+        /*private void Mute_Click(object sender, EventArgs e)
+        {
+            SoundPlayer music = new SoundPlayer(Resources.Resource1.Tetris);
+
+           if (S)
+            {
+                mu();
+            }
+            else if (music = music.Stop())
+            {
+                music.Play();
+            }
+        }*/
     }
 
 }
