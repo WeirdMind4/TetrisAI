@@ -656,7 +656,7 @@ namespace Tetris3
             //AI is lines end
             //row = the lower it is on the board, the higher the row, thus higher row is GOOD
             //holes = the more holes to worse it is, this higher is BAD
-            double sum = (lines * 100) + (row * .5) - (Holes * 15);//heuristics
+            double sum = (lines * 100) + (row * .5) - (Holes * 1);//heuristics
 
             if (bestChoice < sum)
             {
